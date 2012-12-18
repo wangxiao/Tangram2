@@ -362,6 +362,7 @@ baidu.dom.extend({
                         for(var i = 0,num = item.size();i<num;i++){
                             item.eq(i).data('sortable-id',i);
                         };
+                        return sortable;
                     }else{
                         var index = [],
                             _item = me.find('.tang-sortable-item');
@@ -370,7 +371,6 @@ baidu.dom.extend({
                         };
                         return index;
                     };
-                    return sortable;
                 },
 
                 //取消拖拽，回到上一次
@@ -536,10 +536,8 @@ baidu.dom.extend({
                     dragEleClone.after(dragEle);
                 };
                 dragEle.css({'position':'static',left:'',top:''});
-                
-                //此处怀疑remove中的bug，所以使用display处理下，后续可以去掉。
-                dragEleClone.css('display','none').remove();
-                me.remove(dragEleClone);
+                dragEleClone.remove();
+                dragEleClone = null;
                 sortable.fire('end');
             },
 
