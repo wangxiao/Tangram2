@@ -175,10 +175,10 @@ baidu.plugin._util_.rubberSelect = function(options){
                 doc.off('mousemove',ingHandle);
                 clearTimeout(delayTimer);
                 delayTimer = setTimeout(function(){
-                    doc.trigger('rubberselectend');
-                    mask.hide();
+                    baidu.dom(document).trigger('rubberselectend');
+                    baidu.dom('.tang-rubberSelect').hide();
 
-                //用户选择延时0.15秒，雅虎交互原则。    
+                //用户选择阶段延时0.15秒取消，使用户可以续选，雅虎交互原则。    
                 },150);
             };
         },
@@ -206,7 +206,7 @@ baidu.plugin._util_.rubberSelect = function(options){
     //函数主逻辑开始
     mask = baidu.dom('.tang-rubberSelect');
     if(!mask.size()){
-        mask = baidu.dom('<div class="tang-rubberSelect">');
+        mask = baidu.dom('<div class="tang-rubberSelect" style="position:absolute;">');
     };
     setRange();
     mask.hide().appendTo(document.body);
@@ -229,10 +229,10 @@ baidu.plugin._util_.rubberSelect = function(options){
 
         //析构函数
         dispose:function(){
-            doc.remove(mask);
-            doc.off('mousemove',ingHandle);
             doc.off('mousedown',handle);
+            doc.off('mousemove',ingHandle);
             doc.off('mouseup',endHandle);
+            mask.remove();
             doc = mask = timer = null;
             for(var k in this){
                 delete this[k];

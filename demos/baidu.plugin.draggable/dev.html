@@ -22,11 +22,9 @@
     </body>
     <script type="text/javascript">
     var a = baidu('#test-a').draggable({
-        enable:false,
-        range:'#wrapper',
         zIndex:2,
         onstart:function(){console.log('wangxiao');}
-    });
+    }).range('#wrapper');
 
     var b = baidu('#test-b').draggable('.item',{
         endOf:'#wrapper',

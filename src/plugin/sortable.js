@@ -310,7 +310,7 @@ baidu.dom.extend({
             //每次变化后sortable内的HTML，为了能够完美实现cancel方法
             htmlCancel = '',
             htmlTemp = '',
- 
+
             //函数节流计时器
             timer,
 
@@ -430,10 +430,15 @@ baidu.dom.extend({
                         sortable.on( evts[ i ] ,opt[ 'on'+evts[i] ] );
                     };
                 };
+
+                //在cancel和reset方法中，这些事件会被重绑，所以在这先清除。
+                draggable.off('start',handle);
+                draggable.off('dragging',ingHandle);
+                draggable.off('end',endHandle);
+
                 draggable.on('start',handle);
                 draggable.on('dragging',ingHandle);
                 draggable.on('end',endHandle);
-                sortable.on('change',changeHandle);
             },
 
             getItemAttr = function(){
@@ -482,6 +487,7 @@ baidu.dom.extend({
                     h:dragEle.outerHeight()
                 };
                 sortable.fire('start');
+                htmlTemp = me.html();
 
                 //清除掉draggable附加的className
                 dragEleClone = baidu.dom(dragEle).clone();
@@ -495,8 +501,6 @@ baidu.dom.extend({
                 var o = dragEleClone.offset();
                 dragEleCloneAttr.left = o.left;
                 dragEleCloneAttr.top = o.top;
-
-                htmlTemp = me.html();
             },
 
             ingHandle = function(){
@@ -532,6 +536,7 @@ baidu.dom.extend({
                 //克隆的元素在原位
                 if(o.left == dragEleCloneAttr.left && o.top == dragEleCloneAttr.top){
                 }else{
+                    htmlCancel = htmlTemp;
                     sortable.fire('change');
                     dragEleClone.after(dragEle);
                 };
@@ -539,10 +544,6 @@ baidu.dom.extend({
                 dragEleClone.remove();
                 dragEleClone = null;
                 sortable.fire('end');
-            },
-
-            changeHandle = function(){
-                htmlCancel = htmlTemp;
             },
 
             setOpt = function(opts){

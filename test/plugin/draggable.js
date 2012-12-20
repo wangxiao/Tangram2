@@ -186,23 +186,22 @@ test('enable方法', function() {
 test('range方法', function() {
     stop();
     expect(2);
-    var range = jQuery("<div style='width:250px;height:230px;border:2px solid #FFF;'></div>").prepend('body');
-    var div = baidu('#test-a').offset({left:0,top:0}).get(0);
-    draggable.range(range);
+    var range = jQuery("<div id='range' style='background-color:#F00;width:350px;height:350px;border:2px solid #0FF;'></div>").prependTo('body');
+    var div = baidu('#test-a').offset({left:10,top:10}).get(0);
+    draggable.range(range[0]);
 
     ua.mousedown(div, {
-        clientX : 20,
-        clientY : 20
+        clientX : 10,
+        clientY : 10
     });
 
     var move = function(ele, x, y) {
-        if (x >= 100) {
+        if (x >= 300) {
             ua.mouseup(ele);
             var tang = baidu(ele);
-            equal(tang.offset().left, 50, "stop left");
-            equal(tang.offset().top, 30, "stop top");
+            equal(tang.offset().left, 162, "stop left");
+            equal(tang.offset().top, 145, "stop top");
             range.remove();
-            draggable.range();
             start();
         } else {
             ua.mousemove(document, {
@@ -214,27 +213,26 @@ test('range方法', function() {
             }, 20);
         }
     };
-    move(div, 0, 0);
+    move(div, 20, 20);
 });
 
 test('endOf方法', function() {
     stop();
     expect(2);
-    var endOf = jQuery("<div style='width:230px;height:220px;border:2px solid #FFF;'></div>").prepend('body');
+    var endOf = jQuery("<div id='endOf' style='background-color:#F00;width:250px;height:250px;border:2px solid #0FF;'></div>").prependTo('body');
     var div = baidu('#test-a').get(0);
-    draggable.reset().endOf(endOf);
-
+    draggable.reset().endOf(endOf[0]);
     ua.mousedown(div, {
         clientX : 20,
         clientY : 20
     });
 
     var move = function(ele, x, y) {
-        if (x >= 200) {
+        if (x >= 300) {
             ua.mouseup(ele);
-            var tang = baidu(ele);
-            equal(tang.offset().left, 50, "stop left");
-            equal(tang.offset().top, 30, "stop top");
+            var offset = baidu(ele).offset();
+            equal(offset.left,0, "stop left");
+            equal(offset.top,0, "stop top");
             endOf.remove();
             start();
         } else {
