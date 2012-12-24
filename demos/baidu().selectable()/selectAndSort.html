@@ -93,8 +93,28 @@
     var sort = baidu( '#behavior ol' ).sortable( {
         range:'#behavior'
     });
+
+    var div = baidu('<div>');
+    var selected;
     var select = baidu( '#behavior ol' ).selectable( {
-        range:'#behavior'
+        range:'#behavior',
+
+        //关闭通过ctrl或command键间隔选择元素
+        intervalSelect:false,
+        onstart:function(){
+            div.before(selected);
+        },
+        onend:function(){
+            selected = select.selected();
+            if(selected.length){
+                selected.eq(0).before(div);
+                div.append(selected);
+            };
+            sort.dispose();
+            sort = baidu( '#behavior ol' ).sortable({
+                range:'#behavior'
+            });
+        }
     });
 
     sort.getBack().on('mousedown',function(){
